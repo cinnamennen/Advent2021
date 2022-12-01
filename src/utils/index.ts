@@ -29,6 +29,6 @@
  *     import { myUtil } from '../utils'
  *
  */
-export function transpose(array: Array<Array<unknown>>) {
+export function transpose<T = unknown>(array: Array<Array<T>>): Array<Array<T>> {
   return array[0].map((_, colIndex) => array.map((row) => row[colIndex]));
 }
