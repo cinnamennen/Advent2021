@@ -42,21 +42,53 @@ const part1 = (rawInput: string) => {
     }
   }
 
-  if (!good){
-    throw new Error('No bingo won')
+  if (!good) {
+    throw new Error("No bingo won");
   }
 
-  if (!called){
-    throw new Error('Things got weird')
+  if (!called) {
+    throw new Error("Things got weird");
   }
-  const remaining = good.map(row=> row.filter(num=> !drawn.has(num)).reduce((a,b)=>a+b,0)).reduce((a,b)=>a+b,0)
+  const remaining = good
+    .map((row) =>
+      row.filter((num) => !drawn.has(num)).reduce((a, b) => a + b, 0),
+    )
+    .reduce((a, b) => a + b, 0);
   return remaining * called;
 };
 
 const part2 = (rawInput: string) => {
-  let input = parseInput(rawInput);
+  let [numbers, boards] = parseInput(rawInput);
+  const drawn = new Set();
+  numbers.reverse();
+  let called;
+  while (numbers.length > 0 && boards.length > 1) {
+    called = numbers.pop();
+    drawn.add(called);
+    boards = boards.filter(
+      (board) =>
+        !board.some((row) => row.every((num) => drawn.has(num))) &&
+        !transpose(board).some((row) => row.every((num) => drawn.has(num))),
+    );
+  }
+  const loser = boards[0];
+  while (numbers.length > 0) {
+    called = numbers.pop();
+    drawn.add(called);
+    if (
+      loser.some((row) => row.every((num) => drawn.has(num))) ||
+      transpose(loser).some((row) => row.every((num) => drawn.has(num)))
+    ) {
+      break;
+    }
+  }
 
-  return;
+  const remaining = loser
+    .map((row) =>
+      row.filter((num) => !drawn.has(num)).reduce((a, b) => a + b, 0),
+    )
+    .reduce((a, b) => a + b, 0);
+  return remaining * (called ?? 1);
 };
 
 run({
