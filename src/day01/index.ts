@@ -17,9 +17,12 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
   const padded = [...input];
-  const groups = padded.map(
-    (value, index, array) => array[index] + array[index + 1] + array[index + 2],
-  ).slice(0, -2);
+  const groups = padded
+    .map(
+      (value, index, array) =>
+        array[index] + array[index + 1] + array[index + 2],
+    )
+    .slice(0, -2);
   return getIncreases(groups);
 };
 
