@@ -1,11 +1,8 @@
 import run from "aocrunner";
+import { transpose } from "../utils/index.js";
 
 const parseInput = (rawInput: string) =>
   rawInput.split("\n").map((u) => u.split(""));
-
-function transpose(array: Array<Array<unknown>>) {
-  return array[0].map((_, colIndex) => array.map((row) => row[colIndex]));
-}
 
 const part1 = (rawInput: string) => {
   const input = parseInput(rawInput);
